@@ -258,36 +258,6 @@ const TableComponent = ({ data, presale = false }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box
-        mt={3}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Typography fontFamily="karla" fontSize="20px" color="#fff">
-          {" "}
-          Total Providers : 23
-        </Typography>
-        <Pagination
-          count={10}
-          variant="outlined"
-          shape="rounded"
-          //   color="secondary"
-          sx={{
-            color: "#10092a !important",
-            ".MuiButtonBase-root": {
-              color: "#fff !important",
-              backgroundColor: "#190f44",
-            },
-            ".MuiPagination-ul": {
-              //   backgroundColor: "#10092a",
-            },
-            ".Mui-selected": {
-              backgroundColor: "#10092a !important",
-            },
-          }}
-        />
-      </Box>
     </Box>
   );
 };

@@ -98,6 +98,7 @@ export default function Header() {
               justifyContent: "center",
             }}
             key={text}
+            onClick={() => (window.location.href = "https://theada.pro")}
           >
             <ListItemText
               style={{
@@ -115,7 +116,7 @@ export default function Header() {
       <Box mb={1} display="flex" justifyContent="center">
         <ConnectWalletButton
           // primaryColor="transparent"
-          borderRadius={30} 
+          borderRadius={30}
           message=""
           // onSignMessage={"hello"}
           onConnect={onConnect}
@@ -156,12 +157,42 @@ export default function Header() {
               alignItems="center"
             >
               <Hidden mdDown>
-                <StyledText mr={3}>Overview</StyledText>
-                <StyledText mr={3}>About TADA</StyledText>
-                <StyledText mr={3}>How it Works</StyledText>
-                <StyledText mr={3}>Token</StyledText>
-                <StyledText mr={3}>Team</StyledText>
-                <StyledText mr={3}>Roadmap</StyledText>
+                <StyledText
+                  mr={3}
+                  onClick={() => (window.location.href = "https://theada.pro")}
+                >
+                  Overview
+                </StyledText>
+                <StyledText
+                  mr={3}
+                  onClick={() => (window.location.href = "https://theada.pro")}
+                >
+                  About TADA
+                </StyledText>
+                <StyledText
+                  mr={3}
+                  onClick={() => (window.location.href = "https://theada.pro")}
+                >
+                  How it Works
+                </StyledText>
+                <StyledText
+                  mr={3}
+                  onClick={() => (window.location.href = "https://theada.pro")}
+                >
+                  Token
+                </StyledText>
+                <StyledText
+                  mr={3}
+                  onClick={() => (window.location.href = "https://theada.pro")}
+                >
+                  Team
+                </StyledText>
+                <StyledText
+                  mr={3}
+                  onClick={() => (window.location.href = "https://theada.pro")}
+                >
+                  Roadmap
+                </StyledText>
                 <ConnectWalletButton
                   // primaryColor="transparent"
                   borderRadius={30}

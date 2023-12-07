@@ -59,6 +59,7 @@ export function StyledText({ children, ...props }) {
           fontFamily: "EXO 2",
           fontWeight: "400",
           mr: props.mr,
+          cursor: "pointer",
         }}
       >
         {children}

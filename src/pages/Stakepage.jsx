@@ -34,24 +34,27 @@ export default function StakePage() {
 
   const handleStake = async () => {
     // Implement Cardano logic here.
+    if (amount === "") {
+      return;
+    } else {
+      const monthAPYMap = {
+        6: 45,
+        12: 105,
+        18: 160,
+      };
 
-    const monthAPYMap = {
-      6: 45,
-      12: 105,
-      18: 160,
-    };
+      setStaking(true);
+      await addStake({
+        walletId: stakeAddress,
+        currencyType,
+        stakedAmount: parseInt(amount),
+        apy: monthAPYMap[duration],
+        durationInMonths: duration,
+      });
+      setStaking(false);
 
-    setStaking(true);
-    await addStake({
-      walletId: stakeAddress,
-      currencyType,
-      stakedAmount: parseInt(amount),
-      apy: monthAPYMap[duration],
-      durationInMonths: duration,
-    });
-    setStaking(false);
-
-    navigate("/history");
+      navigate("/history");
+    }
   };
 
   const handleClose = () => {
@@ -117,7 +120,7 @@ export default function StakePage() {
             fontWeight="400"
             color="#fff"
           >
-            USDT Value: -- <span style={{ fontWeight: "700" }}>$2,000.12</span>
+            USDT Value: -- <span style={{ fontWeight: "700" }}>$---</span>
           </Typography>
         </Box>
         <Box
@@ -175,7 +178,7 @@ export default function StakePage() {
             fontWeight="400"
             color="#fff"
           >
-            USDT Value: -- <span style={{ fontWeight: "700" }}>$2,000.12</span>
+            USDT Value: -- <span style={{ fontWeight: "700" }}>$---</span>
           </Typography>
         </Box>
         <Box
@@ -289,16 +292,21 @@ export default function StakePage() {
                   >
                     Wallet Address
                   </Typography>
-                  <Typography
-                    fontFamily="karla"
-                    fontSize="22px"
-                    fontWeight="700"
-                    color="#fff"
-                  >
-                    Oa4x....4a55
-                  </Typography>
+                  {stakeAddress && (
+                    <Typography
+                      fontSize="18px"
+                      fontWeight="400"
+                      color="#F7F4FA"
+                    >
+                      {stakeAddress.slice(0, 5)}...
+                      {stakeAddress.slice(
+                        stakeAddress.length - 5,
+                        stakeAddress.length
+                      )}
+                    </Typography>
+                  )}
                 </Box>
-                {!matches && (
+                {/* {!matches && (
                   <StyledButton width="180px" style={{ height: "48px" }}>
                     Disconnect
                     <PowerSettingsNewIcon
@@ -309,7 +317,7 @@ export default function StakePage() {
                       }}
                     />
                   </StyledButton>
-                )}
+                )} */}
               </Box>
             </Box>
             <Box sx={{ mx: 2, borderBottom: "3px solid #918ba9" }} />
@@ -329,7 +337,7 @@ export default function StakePage() {
                   >
                     Amount To Stake
                   </Typography>
-                  <Typography
+                  {/* <Typography
                     fontFamily="karla"
                     fontSize={matches ? "13px" : "20px"}
                     fontWeight="400"
@@ -337,7 +345,7 @@ export default function StakePage() {
                   >
                     USDT Value: --{" "}
                     <span style={{ fontWeight: "700" }}>$2,000.12</span>
-                  </Typography>
+                  </Typography> */}
                 </Box>
                 <Box
                   mt={1}
@@ -399,15 +407,6 @@ export default function StakePage() {
                   >
                     Duration
                   </Typography>
-                  <Typography
-                    fontFamily="karla"
-                    fontSize={matches ? "13px" : "20px"}
-                    fontWeight="400"
-                    color="#fff"
-                  >
-                    USDT Value: --{" "}
-                    <span style={{ fontWeight: "700" }}>$2,000.12</span>
-                  </Typography>
                 </Box>
                 <Box
                   mt={1}
@@ -456,7 +455,7 @@ export default function StakePage() {
                     Set Max
                   </Box>
                 </Box>
-                <Typography
+                {/* <Typography
                   sx={{
                     my: 2,
                     fontSize: "16px",
@@ -469,13 +468,17 @@ export default function StakePage() {
                   typesetting industry. Lorem Ipsum has been the industry's
                   standard dummy text ever since the 1500s, when an unknown
                   printer
-                </Typography>
+                </Typography> */}
                 <StyledButton
                   type={"submit"}
                   disabled={staking}
                   onClick={handleStake}
                   width="100%"
-                  style={{ height: "50px", marginBottom: "10px" }}
+                  style={{
+                    height: "50px",
+                    marginBottom: "10px",
+                    marginTop: 100,
+                  }}
                 >
                   {staking ? "Staking..." : "Stake Now"}
                 </StyledButton>
