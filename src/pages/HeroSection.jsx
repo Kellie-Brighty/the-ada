@@ -30,7 +30,7 @@ function HeroSection() {
               Staking Pools
             </Box>
             <ConnectWalletButton
-              // primaryColor="transparent"
+              primaryColor="#2EE7BE"
               borderRadius={30}
               message=""
               // onSignMessage={onSign}

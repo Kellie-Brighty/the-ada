@@ -15,6 +15,7 @@ import { makeStyles } from "@mui/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import clsx from "clsx";
 import { logo } from "./SmallComponents/Images";
+import styled from "styled-components";
 
 import {
   ConnectWalletList,
@@ -41,6 +42,14 @@ const useStyles = makeStyles({
     },
   },
 });
+
+const CustomConnectWalletButton = styled(ConnectWalletButton)`
+  /* Add your custom styles here */
+  background-color: #3498db;
+  color: #fff;
+
+  /* Add any other styles you want to customize */
+`;
 
 export default function Header() {
   // const { account, connect, disconnect } = useContext(AppContext);
@@ -98,7 +107,7 @@ export default function Header() {
               justifyContent: "center",
             }}
             key={text}
-            onClick={() => (window.location.href = "https://theada.pro")}
+            onClick={() => window.open("https://theada.pro", "_blank")}
           >
             <ListItemText
               style={{
@@ -115,7 +124,7 @@ export default function Header() {
       </List>
       <Box mb={1} display="flex" justifyContent="center">
         <ConnectWalletButton
-          // primaryColor="transparent"
+          primaryColor="#2EE7BE"
           borderRadius={30}
           message=""
           // onSignMessage={"hello"}
@@ -126,7 +135,8 @@ export default function Header() {
                     font-weight: 700;
                     width: 164px;
                     color: #000;
-                    & > span { padding: 5px 16px; }
+                    & > span { padding: 5px 16px; };
+                    backgroundColor: yellow
                 `}
         />
       </Box>
@@ -159,44 +169,45 @@ export default function Header() {
               <Hidden mdDown>
                 <StyledText
                   mr={3}
-                  onClick={() => (window.location.href = "https://theada.pro")}
+                  onClick={() => window.open("https://theada.pro", "_blank")}
                 >
                   Overview
                 </StyledText>
                 <StyledText
                   mr={3}
-                  onClick={() => (window.location.href = "https://theada.pro")}
+                  onClick={() => window.open("https://theada.pro", "_blank")}
                 >
                   About TADA
                 </StyledText>
                 <StyledText
                   mr={3}
-                  onClick={() => (window.location.href = "https://theada.pro")}
+                  onClick={() => window.open("https://theada.pro", "_blank")}
                 >
                   How it Works
                 </StyledText>
                 <StyledText
                   mr={3}
-                  onClick={() => (window.location.href = "https://theada.pro")}
+                  onClick={() => window.open("https://theada.pro", "_blank")}
                 >
                   Token
                 </StyledText>
                 <StyledText
                   mr={3}
-                  onClick={() => (window.location.href = "https://theada.pro")}
+                  onClick={() => window.open("https://theada.pro", "_blank")}
                 >
                   Team
                 </StyledText>
                 <StyledText
                   mr={3}
-                  onClick={() => (window.location.href = "https://theada.pro")}
+                  onClick={() => window.open("https://theada.pro", "_blank")}
                 >
                   Roadmap
                 </StyledText>
                 <ConnectWalletButton
-                  // primaryColor="transparent"
+                  // primaryColor="#2EE7BE"
                   borderRadius={30}
                   message=""
+                  primaryColor="#2EE7BE"
                   // onSignMessage={onSign}
                   onConnect={onConnect}
                   customCSS={`
@@ -205,7 +216,7 @@ export default function Header() {
                     font-weight: 700;
                     width: 164px;
                     color: #000;
-                    & > span { padding: 5px 16px; }
+                    & > span { padding: 5px 16px; };
                 `}
                 />
               </Hidden>
