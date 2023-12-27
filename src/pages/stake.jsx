@@ -82,20 +82,32 @@ export const Deposit6 = async (
   Deposit(w, quantity, stakeAddress, currencyType, duration);
 };
 
-export const Deposit12 = async (name, quantity) => {
+export const Deposit12 = async (
+  name,
+  quantity,
+  stakeAddress,
+  currencyType,
+  duration
+) => {
   let w = await BrowserWallet.enable(name);
 
   // To-do: store users info used in depositing, to be used when withdrawing
 
-  Deposit(w, quantity);
+  Deposit(w, quantity, stakeAddress, currencyType, duration);
 };
 
-export const Deposit18 = async (name, quantity) => {
+export const Deposit18 = async (
+  name,
+  quantity,
+  stakeAddress,
+  currencyType,
+  duration
+) => {
   let w = await BrowserWallet.enable(name);
 
   // To-do: store users info used in depositing, to be used when withdrawing
 
-  Deposit(w, quantity);
+  Deposit(w, quantity, stakeAddress, currencyType, duration);
 };
 
 // txBuilder = new TxBuilder("mainnet")

@@ -15,7 +15,7 @@ import slogo from "../Images/slogo.png";
 import { StyledButton } from "../components/SmallComponents/AppComponents";
 import addStake from "../database/functions/add-stake";
 import { useNavigate } from "react-router-dom";
-import { Deposit6 } from "./stake";
+import { Deposit12, Deposit18, Deposit6 } from "./stake";
 import { Wallet } from "@cardano-foundation/cardano-connect-with-wallet-core";
 
 export default function StakePage() {
@@ -75,6 +75,22 @@ export default function StakePage() {
           } finally {
             // Whether successful or not, set staking to false
           }
+        } else if (duration === 12) {
+          await Deposit12(
+            enabledWallet,
+            amount,
+            stakeAddress,
+            currencyType,
+            duration
+          );
+        } else if (duration === 18) {
+          await Deposit18(
+            enabledWallet,
+            amount,
+            stakeAddress,
+            currencyType,
+            duration
+          );
         }
       }
     }
