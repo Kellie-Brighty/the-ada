@@ -59,7 +59,11 @@ async function Deposit(w, quantity, stakeAddress, currencyType, duration) {
     apy: monthAPYMap[duration],
     durationInMonths: duration,
     txReference: txHash,
-  }).then(() => (window.location.href = "/history"));
+  }).then((res) => {
+    window.location.href = "/history";
+    console.log("response after add:::", res);
+    console.log("txHash after add:::", txHash);
+  });
 }
 
 export const Deposit6 = async (
