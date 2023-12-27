@@ -37,9 +37,7 @@ const HistoryPage = () => {
     getStakes({ walletId: stakeAddress }).then((stakeDocs) => {
       setStakes(stakeDocs.map((stake) => ({ id: stake.id, ...stake.data() })));
     });
-  }, []);
-
-  console.log(stakes);
+  }, [stakeAddress]);
 
   return (
     <Box py={5}>
