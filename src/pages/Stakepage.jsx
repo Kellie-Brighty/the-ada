@@ -15,6 +15,8 @@ import slogo from "../Images/slogo.png";
 import { StyledButton } from "../components/SmallComponents/AppComponents";
 import addStake from "../database/functions/add-stake";
 import { useNavigate } from "react-router-dom";
+import { Deposit6 } from "./stake";
+import { Wallet } from "@cardano-foundation/cardano-connect-with-wallet-core";
 
 export default function StakePage() {
   const navigate = useNavigate();
@@ -30,10 +32,11 @@ export default function StakePage() {
 
   const [staking, setStaking] = useState(false);
 
-  const { stakeAddress } = useCardano();
+  const { stakeAddress, accountBalance, enabledWallet } = useCardano();
+
+  console.log("enabled wallet:::");
 
   const handleStake = async () => {
-    // Implement Cardano logic here.
     if (amount === "") {
       return;
     } else {
@@ -43,17 +46,34 @@ export default function StakePage() {
         18: 160,
       };
 
-      setStaking(true);
-      await addStake({
-        walletId: stakeAddress,
-        currencyType,
-        stakedAmount: parseInt(amount),
-        apy: monthAPYMap[duration],
-        durationInMonths: duration,
-      });
-      setStaking(false);
+      if (enabledWallet) {
+        if (duration === 6) {
+          setStaking(true);
 
-      navigate("/history");
+          try {
+            // Assuming Deposit6 returns a Promise
+            await Deposit6(enabledWallet, amount);
+
+            // Deposit successful, now trigger addStake
+            // await addStake({
+            //   walletId: stakeAddress,
+            //   currencyType,
+            //   stakedAmount: parseInt(amount),
+            //   apy: monthAPYMap[duration],
+            //   durationInMonths: duration,
+            // });
+
+            // If everything is successful, navigate to "/history"
+            // navigate("/history");
+          } catch (error) {
+            // Handle errors during deposit or addStake
+            console.error("Error during deposit or stake addition:", error);
+          } finally {
+            // Whether successful or not, set staking to false
+            setStaking(false);
+          }
+        }
+      }
     }
   };
 
@@ -280,7 +300,7 @@ export default function StakePage() {
                     fontWeight="700"
                     color="#fff"
                   >
-                    200 TADA
+                    {accountBalance} TADA
                   </Typography>
                 </Box>
                 <Box mx={3}>
@@ -377,7 +397,15 @@ export default function StakePage() {
                     placeholder="Enter Amount"
                     value={amount}
                     name="usdt"
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={(e) => {
+                      // Ensure only whole numbers (integers) are allowed
+                      const enteredValue = e.target.value;
+                      const isValidInput = /^\d+$/.test(enteredValue);
+
+                      if (isValidInput || enteredValue === "") {
+                        setAmount(enteredValue);
+                      }
+                    }}
                   />
 
                   <Box

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Container,
   Hidden,
@@ -24,6 +24,8 @@ import {
 } from "@cardano-foundation/cardano-connect-with-wallet";
 import { StyledText } from "./SmallComponents/AppComponents";
 import { Link } from "react-router-dom";
+import { Wallet } from "@cardano-foundation/cardano-connect-with-wallet-core";
+import { WalletContext, useWallet, useWalletList } from "@meshsdk/react";
 
 const useStyles = makeStyles({
   list: {
@@ -61,7 +63,16 @@ export default function Header() {
     signMessage,
     connect,
     disconnect,
+    accountBalance,
   } = useCardano();
+  const { name } = useWallet();
+
+
+  useEffect(() => {
+    // console.log("Wallet connection state:::", isConnected);
+    // console.log("Wallet account balance :::", accountBalance);
+  }, [isConnected]);
+
   const onConnect = () => {};
 
   const classes = useStyles();
