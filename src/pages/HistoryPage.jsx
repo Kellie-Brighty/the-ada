@@ -1,5 +1,8 @@
+import { useCardano } from "@cardano-foundation/cardano-connect-with-wallet";
+import { ArrowBack, ArrowForward, ContentCopy } from "@mui/icons-material";
 import {
   Box,
+  Button,
   Container,
   Paper,
   Table,
@@ -13,12 +16,8 @@ import {
   tableCellClasses,
   useMediaQuery,
 } from "@mui/material";
-import Pagination from "@mui/material/Pagination";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { StyledButton } from "../components/SmallComponents/AppComponents";
 import getStakes from "../database/functions/get-stakes";
-import { useCardano } from "@cardano-foundation/cardano-connect-with-wallet";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.body}`]: {
@@ -33,11 +32,17 @@ const HistoryPage = () => {
 
   const [stakes, setStakes] = useState([]);
 
+  const [pageNumber, setPageNumber] = useState(1);
+
   useEffect(() => {
-    getStakes({ walletId: stakeAddress }).then((stakeDocs) => {
-      setStakes(stakeDocs.map((stake) => ({ id: stake.id, ...stake.data() })));
-    });
-  }, [stakeAddress]);
+    getStakes({ walletId: stakeAddress, pageNumber: pageNumber - 1 }).then(
+      (stakeDocs) => {
+        setStakes(
+          stakeDocs.map((stake) => ({ id: stake.id, ...stake.data() }))
+        );
+      }
+    );
+  }, [pageNumber, stakeAddress]);
 
   return (
     <Box py={5}>
@@ -86,6 +91,16 @@ const HistoryPage = () => {
                       fontWeight="400"
                       color="#fff"
                     >
+                      Transaction Hash
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      textAlign="center"
+                      fontSize="18px"
+                      fontWeight="400"
+                      color="#fff"
+                    >
                       Currency Type
                     </Typography>
                   </TableCell>
@@ -125,7 +140,7 @@ const HistoryPage = () => {
                 {stakes.map(
                   (
                     {
-                      walletId,
+                      txReference,
                       currencyType,
                       stakedAmount,
                       apy,
@@ -162,6 +177,31 @@ const HistoryPage = () => {
                           </Typography>
                         )}
                       </StyledTableCell> */}
+                      <TableCell>
+                        <Box
+                          display={"flex"}
+                          alignItems={"center"}
+                          justifyContent={"center"}
+                        >
+                          <Typography
+                            textAlign="center"
+                            fontSize="18px"
+                            fontWeight="400"
+                            color="#fff"
+                          >
+                            {/* {txReference} */}
+                            {txReference.slice(0, 5)}...
+                            {txReference.slice(-5, txReference.length)}
+                          </Typography>
+                          <Button
+                            onClick={() => {
+                              navigator.clipboard.writeText(txReference);
+                            }}
+                          >
+                            <ContentCopy />
+                          </Button>
+                        </Box>
+                      </TableCell>
                       <StyledTableCell align="center">
                         <Typography
                           fontSize="18px"
@@ -213,6 +253,24 @@ const HistoryPage = () => {
               </TableBody>
             </Table>
           </TableContainer>
+        </Box>
+
+        <Box
+          marginTop={2}
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"end"}
+          gap={2}
+        >
+          <Button>
+            <ArrowBack /> Previous
+          </Button>
+
+          <Typography color={"#F7F4FA"}>{pageNumber}</Typography>
+
+          <Button>
+            Next <ArrowForward />
+          </Button>
         </Box>
       </Container>
     </Box>
