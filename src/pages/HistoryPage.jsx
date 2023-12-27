@@ -16,7 +16,7 @@ import {
   tableCellClasses,
   useMediaQuery,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import getStakes from "../database/functions/get-stakes";
 
 const StyledTableCell = styled(TableCell)(() => ({
@@ -31,17 +31,19 @@ const HistoryPage = () => {
   const { stakeAddress } = useCardano();
 
   const [stakes, setStakes] = useState([]);
+  const stakeDocs = useRef([]);
 
   const [pageNumber, setPageNumber] = useState(1);
 
   useEffect(() => {
-    getStakes({ walletId: stakeAddress, pageNumber: pageNumber - 1 }).then(
-      (stakeDocs) => {
-        setStakes(
-          stakeDocs.map((stake) => ({ id: stake.id, ...stake.data() }))
-        );
-      }
-    );
+    console.log(pageNumber);
+    getStakes({
+      walletId: stakeAddress,
+      lastDocument: stakeDocs.current[stakes.length - 1],
+    }).then((_stakeDocs) => {
+      setStakes(_stakeDocs.map((stake) => ({ id: stake.id, ...stake.data() })));
+      stakeDocs.current = _stakeDocs;
+    });
   }, [pageNumber, stakeAddress]);
 
   return (
@@ -262,13 +264,15 @@ const HistoryPage = () => {
           justifyContent={"end"}
           gap={2}
         >
-          <Button>
+          <Button
+            onClick={() => setPageNumber((prev) => (prev !== 1 ? prev - 1 : 1))}
+          >
             <ArrowBack /> Previous
           </Button>
 
           <Typography color={"#F7F4FA"}>{pageNumber}</Typography>
 
-          <Button>
+          <Button onClick={() => setPageNumber((prev) => prev + 1)}>
             Next <ArrowForward />
           </Button>
         </Box>

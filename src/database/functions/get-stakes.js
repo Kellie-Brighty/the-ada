@@ -5,20 +5,31 @@ import {
   orderBy,
   query,
   startAfter,
+  startAt,
   where,
 } from "firebase/firestore";
 import { db } from "../index";
 
-const getStakes = async ({ walletId, pageNumber }) => {
+const getStakes = async ({ walletId, lastDocument }) => {
   const stakesDocumentRef = collection(db, "stakes");
 
-  const stakesQuery = query(
-    stakesDocumentRef,
-    where("walletId", "==", walletId),
-    orderBy("stakedOn"),
-    startAfter(pageNumber * 10),
-    limit(10)
-  );
+  if (lastDocument) {
+    var stakesQuery = query(
+      stakesDocumentRef,
+      where("walletId", "==", walletId),
+      orderBy("stakedOn"),
+      startAfter(lastDocument),
+      limit(10)
+    );
+  } else {
+    var stakesQuery = query(
+      stakesDocumentRef,
+      where("walletId", "==", walletId),
+      orderBy("stakedOn"),
+      startAt(0),
+      limit(10)
+    );
+  }
 
   return (await getDocs(stakesQuery)).docs;
 };
