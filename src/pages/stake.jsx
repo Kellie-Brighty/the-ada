@@ -12,8 +12,10 @@ import {
 } from "@meshsdk/core";
 import { scriptAddr, contract } from "./logic/contract";
 // const { scriptAddr, contract } = require("./logic/contract");
+import addStake from "../database/functions/add-stake";
+import { useNavigate } from "react-router-dom";
 
-async function Deposit(w, quantity) {
+async function Deposit(w, quantity, stakeAddress, currencyType, duration) {
   let userAddress = await w.getUsedAddress();
   let userAddressStr = userAddress.to_bech32("addr").toString();
   // console.log("user address:::", userAddressStr)
@@ -33,7 +35,7 @@ async function Deposit(w, quantity) {
     policyId + assetHex
   );
   const tx = new Transaction({ initiator: w });
-  
+
   await tx.sendAssets(contractAddress, [
     {
       quantity: quantity, // the quantity of tada token, i.e. takes input from front end
@@ -44,15 +46,36 @@ async function Deposit(w, quantity) {
   const signedTx = await w.signTx(unsignedTx);
   const txHash = await w.submitTx(signedTx);
   console.log("txHash", txHash);
+  const monthAPYMap = {
+    6: 45,
+    12: 105,
+    18: 160,
+  };
+
+  await addStake({
+    walletId: stakeAddress,
+    currencyType,
+    stakedAmount: parseInt(quantity),
+    apy: monthAPYMap[duration],
+    durationInMonths: duration,
+    txReference: txHash,
+  }).then(() => (window.location.href = "/history"));
 }
 
-export const Deposit6 = async (name, quantity) => {
+export const Deposit6 = async (
+  name,
+  quantity,
+  stakeAddress,
+  currencyType,
+  duration
+) => {
   console.log("quantity:::", quantity);
   let w = await BrowserWallet.enable(name);
+  // const navigate = useNavigate();
 
   // To-do: store users info used in depositing, to be used when withdrawing
 
-  Deposit(w, quantity);
+  Deposit(w, quantity, stakeAddress, currencyType, duration);
 };
 
 export const Deposit12 = async (name, quantity) => {

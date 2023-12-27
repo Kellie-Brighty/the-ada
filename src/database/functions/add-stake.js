@@ -8,6 +8,7 @@ const addStake = async ({
   stakedAmount,
   apy,
   durationInMonths,
+  txReference,
 }) => {
   const stakeId = v4();
   const stakeDocumentRef = doc(db, "stakes", stakeId);
@@ -19,6 +20,7 @@ const addStake = async ({
     apy,
     durationInMonths,
     stakedOn: new Date().toISOString(),
+    txReference,
   });
 };
 

@@ -34,8 +34,6 @@ export default function StakePage() {
 
   const { stakeAddress, accountBalance, enabledWallet } = useCardano();
 
-  console.log("enabled wallet:::");
-
   const handleStake = async () => {
     if (amount === "") {
       return;
@@ -52,7 +50,13 @@ export default function StakePage() {
 
           try {
             // Assuming Deposit6 returns a Promise
-            await Deposit6(enabledWallet, amount);
+            await Deposit6(
+              enabledWallet,
+              amount,
+              stakeAddress,
+              currencyType,
+              duration
+            );
 
             // Deposit successful, now trigger addStake
             // await addStake({
@@ -70,7 +74,6 @@ export default function StakePage() {
             console.error("Error during deposit or stake addition:", error);
           } finally {
             // Whether successful or not, set staking to false
-            setStaking(false);
           }
         }
       }
@@ -416,6 +419,12 @@ export default function StakePage() {
                       cursor: "pointer",
                       pr: 2,
                     }}
+                    onClick={() => {
+                      // setAmount(parseInt(accountBalance, 10));
+                      alert(
+                        "Sorry, you cannot stake all your tokens on Cardano blockchain due to memory access out of bounds."
+                      );
+                    }}
                   >
                     Set Max
                   </Box>
@@ -470,18 +479,6 @@ export default function StakePage() {
                     <option value={12}>12 Months</option>
                     <option value={18}>18 Months</option>
                   </select>
-
-                  <Box
-                    sx={{
-                      fontSize: "17px",
-                      fontWeight: "500",
-                      color: "#fff",
-                      cursor: "pointer",
-                      pr: 2,
-                    }}
-                  >
-                    Set Max
-                  </Box>
                 </Box>
                 {/* <Typography
                   sx={{
