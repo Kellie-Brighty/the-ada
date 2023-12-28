@@ -9,13 +9,13 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { redirect, useParams, useSearchParams } from "react-router-dom";
 import slogo from "../Images/slogo.png";
 import { StyledButton } from "../components/SmallComponents/AppComponents";
 import addStake from "../database/functions/add-stake";
 import { useNavigate } from "react-router-dom";
-import { Deposit12, Deposit18, Deposit6 } from "./stake";
+import { Deposit12, Deposit18, Deposit6, getBalance } from "./stake";
 import { Wallet } from "@cardano-foundation/cardano-connect-with-wallet-core";
 
 export default function StakePage() {
@@ -31,11 +31,25 @@ export default function StakePage() {
   const [currencyType, setCurrencyType] = useState("TADA");
 
   const [staking, setStaking] = useState(false);
+  const [tadaAccountBalance, setTadaAccountBalance] = useState(0);
 
   const { stakeAddress, accountBalance, enabledWallet } = useCardano();
 
+  useEffect(() => {
+    (async () => {
+      if (enabledWallet) {
+        const tadaBalance = await getBalance(enabledWallet);
+        setTadaAccountBalance(tadaBalance);
+        console.log("balance in useeffect:::", tadaBalance);
+      }
+    })();
+  }, [enabledWallet]);
+
   const handleStake = async () => {
     if (amount === "") {
+      return;
+    } else if (window.innerWidth <= 700) {
+      alert("Please stakes can only happen on desktop devices.");
       return;
     } else {
       const monthAPYMap = {
@@ -319,7 +333,7 @@ export default function StakePage() {
                     fontWeight="700"
                     color="#fff"
                   >
-                    {accountBalance} TADA
+                    {tadaAccountBalance} TADA 
                   </Typography>
                 </Box>
                 <Box mx={3}>

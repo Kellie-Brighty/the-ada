@@ -147,3 +147,30 @@ export const Deposit18 = async (
 
 //   console.log("txHash", txHash);
 // };
+
+export const getBalance = async function (name) {
+  const w = await BrowserWallet.enable(name);
+  //  tx
+  let userAddress = await w.getUsedAddress();
+  let userAddressStr = userAddress.to_bech32("addr").toString();
+  // To-do: move the api key used in fetching utxo's to .env file
+
+  const blockchainProvider = new KoiosProvider(
+    "api",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZGRyIjoic3Rha2UxdTlseXFrYWQ0bDdsOG1lanZsY3I4bGwza21rdm1wamhkZGh2dGdmeGcwMjk0bmN4azdqcTciLCJleHAiOjE3MzQ5NzI1NTYsInRpZXIiOjEsInByb2pJRCI6InRoZWFkYXBybyJ9.rmVUtYYYaL18XaRP1OTecIg7I_dw4U75blG8avt2Wzs"
+  );
+  const assetHex = "54414441";
+  const policyId = "9eaed3f99f5c9da1695acaf2542cd6b9f3ef18bbf94dd3f77d17f9cb";
+
+  const userUtxos = await blockchainProvider.fetchAddressUTxOs(
+    userAddressStr,
+    policyId + assetHex
+  );
+
+  let tBalance = 0;
+  for (var i = 0; i < userUtxos.length; i++) {
+    tBalance += parseInt(userUtxos[i].output.amount[1].quantity);
+  }
+  console.log("tada balance:::", tBalance);
+  return tBalance;
+};
