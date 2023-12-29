@@ -16,7 +16,6 @@ import { StyledButton } from "../components/SmallComponents/AppComponents";
 import addStake from "../database/functions/add-stake";
 import { useNavigate } from "react-router-dom";
 import { Deposit12, Deposit18, Deposit6, getBalance } from "./stake";
-import { Wallet } from "@cardano-foundation/cardano-connect-with-wallet-core";
 
 export default function StakePage() {
   const navigate = useNavigate();
@@ -32,6 +31,7 @@ export default function StakePage() {
 
   const [staking, setStaking] = useState(false);
   const [tadaAccountBalance, setTadaAccountBalance] = useState(0);
+  const [pendingRewards, setPendingRewards] = useState(0);
 
   const { stakeAddress, accountBalance, enabledWallet } = useCardano();
 
@@ -71,18 +71,6 @@ export default function StakePage() {
               currencyType,
               duration
             );
-
-            // Deposit successful, now trigger addStake
-            // await addStake({
-            //   walletId: stakeAddress,
-            //   currencyType,
-            //   stakedAmount: parseInt(amount),
-            //   apy: monthAPYMap[duration],
-            //   durationInMonths: duration,
-            // });
-
-            // If everything is successful, navigate to "/history"
-            // navigate("/history");
           } catch (error) {
             // Handle errors during deposit or addStake
             console.error("Error during deposit or stake addition:", error);
@@ -113,6 +101,7 @@ export default function StakePage() {
   const handleClose = () => {
     setOpen(false);
   };
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -333,7 +322,7 @@ export default function StakePage() {
                     fontWeight="700"
                     color="#fff"
                   >
-                    {tadaAccountBalance} TADA 
+                    {tadaAccountBalance} TADA
                   </Typography>
                 </Box>
                 <Box mx={3}>
@@ -437,11 +426,23 @@ export default function StakePage() {
 
                       if (isValidInput || enteredValue === "") {
                         setAmount(enteredValue);
+                        if (duration === 6) {
+                          let pendingRewards = (enteredValue * 45) / 100;
+                          setPendingRewards(pendingRewards);
+                        }
+                        if (duration === 12) {
+                          let pendingRewards = (enteredValue * 105) / 100;
+                          setPendingRewards(pendingRewards);
+                        }
+                        if (duration === 18) {
+                          let pendingRewards = (enteredValue * 160) / 100;
+                          setPendingRewards(pendingRewards);
+                        }
                       }
                     }}
                   />
 
-                  <Box
+                  {/* <Box
                     sx={{
                       fontSize: "17px",
                       fontWeight: "500",
@@ -457,7 +458,7 @@ export default function StakePage() {
                     }}
                   >
                     Set Max
-                  </Box>
+                  </Box> */}
                 </Box>
 
                 <Box
@@ -538,6 +539,7 @@ export default function StakePage() {
                   {staking ? "Staking..." : "Stake Now"}
                 </StyledButton>
               </Grid>
+
               <Grid item xs={12} md={6}>
                 <Box display="flex">
                   <img src={slogo} width="38px" alt="" />
@@ -584,17 +586,8 @@ export default function StakePage() {
                       pr: 2,
                     }}
                   >
-                    0 TADA
+                    {pendingRewards} TADA
                     <br />
-                    <span
-                      style={{
-                        color: "#CDCDCD",
-                        fontSize: "14px",
-                        marginLeft: "10px",
-                      }}
-                    >
-                      $0.00
-                    </span>
                   </Box>
                 </Box>
                 <Box
@@ -629,17 +622,8 @@ export default function StakePage() {
                       pr: 2,
                     }}
                   >
-                    0 TADA
+                    {amount ? amount : 0} TADA
                     <br />
-                    <span
-                      style={{
-                        color: "#CDCDCD",
-                        fontSize: "14px",
-                        marginLeft: "10px",
-                      }}
-                    >
-                      $0.00
-                    </span>
                   </Box>
                 </Box>
                 <Box
@@ -674,7 +658,13 @@ export default function StakePage() {
                       pr: 2,
                     }}
                   >
-                    18.16%
+                    {duration === 6
+                      ? `45%`
+                      : duration === 12
+                      ? `105%`
+                      : duration === 18
+                      ? `160%`
+                      : null}
                   </Box>
                 </Box>
                 <Box
@@ -748,7 +738,7 @@ export default function StakePage() {
                   </Box>
 
                   <StyledButton
-                    onClick={handleOpen}
+                    // onClick={handleOpen}
                     width={matches ? "100%" : "48%"}
                     style={{ height: "50px" }}
                   >
