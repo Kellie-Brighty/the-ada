@@ -19,7 +19,7 @@ const getStakes = async ({ walletId, lastDocument }) => {
       where("walletId", "==", walletId),
       orderBy("stakedOn"),
       startAfter(lastDocument),
-      limit(10)
+      limit(5)
     );
   } else {
     var stakesQuery = query(
@@ -27,7 +27,7 @@ const getStakes = async ({ walletId, lastDocument }) => {
       where("walletId", "==", walletId),
       orderBy("stakedOn"),
       startAt(0),
-      limit(10)
+      limit(5)
     );
   }
 
