@@ -36,12 +36,12 @@ const HistoryPage = () => {
   const [pageNumber, setPageNumber] = useState(1);
 
   useEffect(() => {
-    console.log(pageNumber);
+    console.log(stakeAddress);
     getStakes({
       walletId: stakeAddress,
       lastDocument: stakeDocs.current[stakes.length - 1],
     }).then((_stakeDocs) => {
-      console.log("got");
+      console.log("got", _stakeDocs);
       setStakes(_stakeDocs.map((stake) => ({ id: stake.id, ...stake.data() })));
       stakeDocs.current = _stakeDocs;
     });
