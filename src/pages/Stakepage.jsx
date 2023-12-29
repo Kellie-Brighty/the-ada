@@ -60,6 +60,9 @@ export default function StakePage() {
     } else if (window.innerWidth <= 700) {
       alert("Please stakes can only happen on desktop devices.");
       return;
+    } else if (amount > tadaAccountBalance) {
+      alert("Insufficient balance, please fund your staking account.");
+      return;
     } else {
       const monthAPYMap = {
         6: 45,

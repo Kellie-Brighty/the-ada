@@ -157,16 +157,7 @@ const TableComponent = ({ data, presale = false }) => {
                   Amount Stake
                 </Typography>
               </TableCell>
-              <TableCell>
-                <Typography
-                  textAlign="center"
-                  fontSize="18px"
-                  fontWeight="400"
-                  color="#fff"
-                >
-                  Pending Rewards
-                </Typography>
-              </TableCell>
+
               <TableCell>
                 <Typography fontSize="18px" fontWeight="400" color="#fff">
                   APR
@@ -200,102 +191,104 @@ const TableComponent = ({ data, presale = false }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {stakePool.map(
-              (
-                {
-                  id,
-                  logo,
-                  name,
-                  symbol,
-                  stake,
-                  reward,
-                  APR,
-                  TotalStaked,
-                  duration,
-                  presale,
-                },
-                index
-              ) => (
-                <TableRow
-                  key={index}
-                  sx={{
-                    borderBottom: "0px solid #79709A",
-                    background: "#170D3F",
-                    "&:last-child td": {
-                      borderBottom: 0,
-                    },
-                    "&:hover": {
-                      background: "#170D3Fa1",
-                    },
-                  }}
-                >
-                  <StyledTableCell align="center">
-                    <Typography
-                      fontSize="18px"
-                      fontWeight="400"
-                      color="#F7F4FA"
-                    >
-                      {id}
-                    </Typography>
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    <Box pl={2} display="flex" alignItems="center">
-                      <img src={logo} width="38px" alt="" />
+            {stakePool.length < 1 ? (
+              <p style={{ textAlign: "center", color: "#fff" }}>
+                Loading user stake data...
+              </p>
+            ) : (
+              stakePool.map(
+                (
+                  {
+                    id,
+                    logo,
+                    name,
+                    symbol,
+                    stake,
+                    reward,
+                    APR,
+                    TotalStaked,
+                    duration,
+                    presale,
+                  },
+                  index
+                ) => (
+                  <TableRow
+                    key={index}
+                    sx={{
+                      borderBottom: "0px solid #79709A",
+                      background: "#170D3F",
+                      "&:last-child td": {
+                        borderBottom: 0,
+                      },
+                      "&:hover": {
+                        background: "#170D3Fa1",
+                      },
+                    }}
+                  >
+                    <StyledTableCell align="center">
+                      <Typography
+                        fontSize="18px"
+                        fontWeight="400"
+                        color="#F7F4FA"
+                      >
+                        {id}
+                      </Typography>
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      <Box pl={2} display="flex" alignItems="center">
+                        <img src={logo} width="38px" alt="" />
 
-                      <Box ml={1}>
-                        <Typography fontSize="17px" color="#F7F4FA">
-                          {name}
-                        </Typography>
-                        <Typography fontSize="16px" color="#999999" mb={1}>
-                          {symbol}
-                        </Typography>
+                        <Box ml={1}>
+                          <Typography fontSize="17px" color="#F7F4FA">
+                            {name}
+                          </Typography>
+                          <Typography fontSize="16px" color="#999999" mb={1}>
+                            {symbol}
+                          </Typography>
+                        </Box>
                       </Box>
-                    </Box>
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <Typography
-                      fontSize="18px"
-                      color="#F7F4FA"
-                      sx={{ marginLeft: "10px" }}
-                    >
-                      {stake}
-                    </Typography>
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <Typography fontSize="17px" color="#F7F4FA">
-                      {reward}
-                    </Typography>
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    <Typography fontSize="17px" color="#F7F4FA">
-                      {APR}
-                    </Typography>
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    <Typography
-                      fontSize="17px"
-                      color="#F7F4FA"
-                      sx={{ marginLeft: "10px" }}
-                    >
-                      {TotalStaked}
-                    </Typography>
-                  </StyledTableCell>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Typography
+                        fontSize="18px"
+                        color="#F7F4FA"
+                        sx={{ marginLeft: "10px" }}
+                      >
+                        {stake}
+                      </Typography>
+                    </StyledTableCell>
 
-                  <StyledTableCell align="center">
-                    <Typography fontSize="17px" color="#F7F4FA">
-                      {duration}
-                    </Typography>
-                  </StyledTableCell>
+                    <StyledTableCell>
+                      <Typography fontSize="17px" color="#F7F4FA">
+                        {APR}
+                      </Typography>
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      <Typography
+                        fontSize="17px"
+                        color="#F7F4FA"
+                        sx={{ marginLeft: "10px" }}
+                      >
+                        {TotalStaked}
+                      </Typography>
+                    </StyledTableCell>
 
-                  <StyledTableCell align="center">
-                    <Link
-                      to={`/stake?duration=${duration}`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <StyledButton width="110px">Stake Now</StyledButton>
-                    </Link>
-                  </StyledTableCell>
-                </TableRow>
+                    <StyledTableCell align="center">
+                      <Typography fontSize="17px" color="#F7F4FA">
+                        {duration}
+                      </Typography>
+                    </StyledTableCell>
+
+                    <StyledTableCell align="center">
+                      <Link
+                        to={`/stake?duration=${duration}`}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <StyledButton width="110px">Stake Now</StyledButton>
+                      </Link>
+                    </StyledTableCell>
+                  </TableRow>
+                )
               )
             )}
           </TableBody>
