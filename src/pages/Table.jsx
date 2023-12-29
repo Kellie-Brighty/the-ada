@@ -1,22 +1,22 @@
-import ReactPaginate from "react-paginate";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useCardano } from "@cardano-foundation/cardano-connect-with-wallet";
 import {
-  styled,
-  tableCellClasses,
   Box,
   Paper,
-  Typography,
-  TableContainer,
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
+  Typography,
+  styled,
+  tableCellClasses,
 } from "@mui/material";
-import Pagination from "@mui/material/Pagination";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import slogo from "../Images/slogo.png";
 import { StyledButton } from "../components/SmallComponents/AppComponents";
-import { Link } from "react-router-dom";
+import getStakePoolData from "../database/functions/get-stake-pool-data";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.body}`]: {
@@ -25,45 +25,100 @@ const StyledTableCell = styled(TableCell)(() => ({
 }));
 const itemsPerPage = 10;
 
-const currentItems = [
-  {
-    id: "1",
-    name: "TADA",
-    logo: slogo,
-    stake: "1000 TADA",
-    reward: "18.14 TADA",
-    APR: "45%",
-    TotalStaked: "48,357,412 TADA",
-    duration: "6 Months",
-    symbol: "Pool Title",
-    presale: "pre23",
-  },
-  {
-    id: "2",
-    name: "TADA",
-    logo: slogo,
-    stake: "1000 TADA",
-    reward: "18.14 TADA",
-    APR: "105%",
-    TotalStaked: "48,357,412 TADA",
-    duration: "12 Months",
-    symbol: "Pool Title",
-    presale: "pre23",
-  },
-  {
-    id: "3",
-    name: "TADA",
-    logo: slogo,
-    stake: "1000 TADA",
-    reward: "18.14 TADA",
-    APR: "160%",
-    TotalStaked: "48,357,412 TADA",
-    duration: "18 Months",
-    symbol: "Pool Title",
-    presale: "pre23",
-  },
-];
 const TableComponent = ({ data, presale = false }) => {
+  const { stakeAddress } = useCardano();
+
+  const [stakePool, setStakePool] = useState([]);
+
+  const buildStakePoolData = async () => {
+    return [
+      {
+        id: "1",
+        name: "TADA",
+        logo: slogo,
+        stake: `${
+          (await getStakePoolData({ walletId: stakeAddress, duration: 6 }))
+            .userStakeAmount
+        } TADA`,
+        reward: "18.14 TADA",
+        APR: "45%",
+        TotalStaked: `${
+          (await getStakePoolData({ walletId: stakeAddress, duration: 6 }))
+            .globalStakeAmount
+        } TADA`,
+        duration: "6 Months",
+        symbol: "Pool Title",
+        presale: "pre23",
+        durationId: 6,
+      },
+      {
+        id: "2",
+        name: "TADA",
+        logo: slogo,
+        stake: `${
+          (await getStakePoolData({ walletId: stakeAddress, duration: 12 }))
+            .userStakeAmount
+        } TADA`,
+        reward: "18.14 TADA",
+        APR: "105%",
+        TotalStaked: `${
+          (await getStakePoolData({ walletId: stakeAddress, duration: 12 }))
+            .globalStakeAmount
+        } TADA`,
+        duration: "12 Months",
+        symbol: "Pool Title",
+        presale: "pre23",
+        durationId: 12,
+      },
+      {
+        id: "3",
+        name: "TADA",
+        logo: slogo,
+        stake: `${
+          (await getStakePoolData({ walletId: stakeAddress, duration: 18 }))
+            .userStakeAmount
+        } TADA`,
+        reward: "18.14 TADA",
+        APR: "160%",
+        TotalStaked: `${
+          (await getStakePoolData({ walletId: stakeAddress, duration: 18 }))
+            .globalStakeAmount
+        } TADA`,
+        duration: "18 Months",
+        symbol: "Pool Title",
+        presale: "pre23",
+        durationId: 18,
+      },
+    ];
+  };
+
+  useEffect(() => {
+    buildStakePoolData().then(setStakePool);
+  }, [stakeAddress]);
+
+  // useEffect(() => {
+  //   setStakePool(async (prev) => {
+  //     const updatedStakePool = await Promise.all(
+  //       prev.map(async (data) => {
+  //         const { userStakeAmount, globalStakeAmount } = await getStakePoolData(
+  //           {
+  //             walletId: stakeAddress,
+  //             duration: data.durationId,
+  //           }
+  //         );
+
+  //         return {
+  //           ...data,
+  //           stake: userStakeAmount,
+  //           TotalStaked: globalStakeAmount,
+  //         };
+  //       })
+  //     );
+
+  //     return updatedStakePool;
+  //   });
+  // }, [stakeAddress]);
+
   return (
     <Box>
       <TableContainer
@@ -145,7 +200,7 @@ const TableComponent = ({ data, presale = false }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentItems.map(
+            {stakePool.map(
               (
                 {
                   id,

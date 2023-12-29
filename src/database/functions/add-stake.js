@@ -21,18 +21,6 @@ const addStake = async ({
     durationInMonths,
     stakedOn: new Date().toISOString(),
     txReference,
-  }).then(() => {
-    console.log("Data has been added");
-    const data = {
-      walletId,
-      currencyType,
-      stakedAmount,
-      apy,
-      durationInMonths,
-      stakedOn: new Date().toISOString(),
-      txReference,
-    };
-    console.log("Sent data:::", data);
   });
 };
 

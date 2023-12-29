@@ -41,6 +41,7 @@ const HistoryPage = () => {
       walletId: stakeAddress,
       lastDocument: stakeDocs.current[stakes.length - 1],
     }).then((_stakeDocs) => {
+      console.log("got");
       setStakes(_stakeDocs.map((stake) => ({ id: stake.id, ...stake.data() })));
       stakeDocs.current = _stakeDocs;
     });

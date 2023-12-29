@@ -67,7 +67,6 @@ export default function Header() {
   } = useCardano();
   const { name } = useWallet();
 
-
   useEffect(() => {
     // console.log("Wallet connection state:::", isConnected);
     // console.log("Wallet account balance :::", accountBalance);
@@ -214,6 +213,14 @@ export default function Header() {
                 >
                   Roadmap
                 </StyledText>
+
+                <StyledText
+                  mr={3}
+                  onClick={() => (window.location = "/history")}
+                >
+                  Stake History
+                </StyledText>
+
                 <ConnectWalletButton
                   // primaryColor="#2EE7BE"
                   borderRadius={30}

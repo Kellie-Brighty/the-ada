@@ -1,6 +1,5 @@
 import { useCardano } from "@cardano-foundation/cardano-connect-with-wallet";
 import CloseIcon from "@mui/icons-material/Close";
-import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import {
   Box,
   Container,
@@ -10,11 +9,10 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { redirect, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import slogo from "../Images/slogo.png";
 import { StyledButton } from "../components/SmallComponents/AppComponents";
-import addStake from "../database/functions/add-stake";
-import { useNavigate } from "react-router-dom";
+import getStakePoolData from "../database/functions/get-stake-pool-data";
 import { Deposit12, Deposit18, Deposit6, getBalance } from "./stake";
 
 export default function StakePage() {
@@ -33,6 +31,8 @@ export default function StakePage() {
   const [tadaAccountBalance, setTadaAccountBalance] = useState(0);
   const [pendingRewards, setPendingRewards] = useState(0);
 
+  const [globalStakeAmount, setGlobalStakeAmount] = useState(0);
+
   const { stakeAddress, accountBalance, enabledWallet } = useCardano();
 
   useEffect(() => {
@@ -44,6 +44,15 @@ export default function StakePage() {
       }
     })();
   }, [enabledWallet]);
+
+  useEffect(() => {
+    getStakePoolData({
+      walletId: stakeAddress,
+      duration: duration,
+    }).then((a) => {
+      setGlobalStakeAmount(a.globalStakeAmount);
+    });
+  }, [duration]);
 
   const handleStake = async () => {
     if (amount === "") {
@@ -699,16 +708,7 @@ export default function StakePage() {
                       pr: 2,
                     }}
                   >
-                    ~$48,357.412
-                    <br />
-                    <span
-                      style={{
-                        color: "#CDCDCD",
-                        fontSize: "14px",
-                      }}
-                    >
-                      20,843.712 TADA
-                    </span>
+                    {globalStakeAmount} TADA
                   </Box>
                 </Box>
                 <Box
