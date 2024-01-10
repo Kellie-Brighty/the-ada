@@ -13,7 +13,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import slogo from "../Images/slogo.png";
 import { StyledButton } from "../components/SmallComponents/AppComponents";
 import getStakePoolData from "../database/functions/get-stake-pool-data";
-import { Deposit12, Deposit18, Deposit6, getBalance } from "./stake";
+import { Deposit12, Deposit18, Deposit6, getBalance, Withdraw } from "./stake";
 
 export default function StakePage() {
   const navigate = useNavigate();
@@ -32,6 +32,8 @@ export default function StakePage() {
   const [pendingRewards, setPendingRewards] = useState(0);
 
   const [globalStakeAmount, setGlobalStakeAmount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [amountToWithdraw, setAmountToWithdraw] = useState("");
 
   const { stakeAddress, accountBalance, enabledWallet } = useCardano();
 
@@ -110,6 +112,21 @@ export default function StakePage() {
     }
   };
 
+  const withdrawFrxomPool = async () => {
+    setLoading(true);
+
+    if (amountToWithdraw === "") {
+      setLoading(false);
+      return;
+    } else {
+      try {
+        await Withdraw(enabledWallet, amountToWithdraw);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -168,14 +185,6 @@ export default function StakePage() {
           >
             Account Balance
           </Typography>
-          <Typography
-            fontFamily="karla"
-            fontSize={matches ? "12px" : "20px"}
-            fontWeight="400"
-            color="#fff"
-          >
-            USDT Value: -- <span style={{ fontWeight: "700" }}>$---</span>
-          </Typography>
         </Box>
         <Box
           mt={1}
@@ -226,14 +235,6 @@ export default function StakePage() {
           >
             Withdraw Amount
           </Typography>
-          <Typography
-            fontFamily="karla"
-            fontSize={matches ? "12px" : "20px"}
-            fontWeight="400"
-            color="#fff"
-          >
-            USDT Value: -- <span style={{ fontWeight: "700" }}>$---</span>
-          </Typography>
         </Box>
         <Box
           mt={1}
@@ -247,49 +248,22 @@ export default function StakePage() {
             alignItems: "center",
           }}
         >
-          <Typography
-            sx={{
-              fontSize: "17px",
-              fontWeight: "400",
-              color: "#fff",
-              pl: 2,
-            }}
-          >
-            100
-          </Typography>
-
-          <Box
-            sx={{
-              fontSize: "17px",
-              fontWeight: "500",
-              color: "#fff",
-              cursor: "pointer",
-              pr: 2,
-            }}
-          >
-            Set Max
-          </Box>
+          <input
+            type="text"
+            value={amountToWithdraw}
+            onChange={(e) => setAmountToWithdraw(e.target.value)}
+          />
         </Box>
-        <Typography
-          sx={{
-            my: 2,
-            fontSize: "16px",
-            fontWeight: "400",
-            color: "#dcdcdc",
-            px: 1,
-          }}
-        >
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer
-        </Typography>
+
         <StyledButton
           width="100%"
-          style={{ height: "50px", marginBottom: "10px" }}
+          style={{ height: "50px", marginBottom: "10px", marginTop: "30px" }}
+          onClick={withdrawFrxomPool}
         >
           Confirm Withdrawal
         </StyledButton>
       </Dialog>
+
       <Box py={5} pb={matches ? 10 : 5}>
         <Container maxWidth="lg">
           <Box
@@ -741,7 +715,7 @@ export default function StakePage() {
                   </Box>
 
                   <StyledButton
-                    // onClick={handleOpen}
+                    onClick={handleOpen}
                     width={matches ? "100%" : "48%"}
                     style={{ height: "50px" }}
                   >
