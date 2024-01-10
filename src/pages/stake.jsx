@@ -196,6 +196,9 @@ export const Withdraw = async (name, amountToWithdraw) => {
     const signedTx = await wallet.signTx(unsignedTx);
     const txHash = await wallet.submitTx(signedTx);
     console.log("txHash", txHash);
+    alert(
+      "Withdrawal successful, please refresh the app and check your wallet balance."
+    );
   } else {
     console.error("CiphertextBlob is either undefined or not a Uint8Array");
   }

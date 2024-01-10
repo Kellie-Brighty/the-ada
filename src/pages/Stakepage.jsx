@@ -206,7 +206,7 @@ export default function StakePage() {
               pl: 2,
             }}
           >
-            100
+            {tadaAccountBalance}
           </Typography>
 
           <Box
@@ -252,6 +252,15 @@ export default function StakePage() {
             type="text"
             value={amountToWithdraw}
             onChange={(e) => setAmountToWithdraw(e.target.value)}
+            style={{
+              outline: "none",
+              width: "100%",
+              height: "100%",
+              background: "transparent",
+              border: 0,
+              padding: "0px 10px",
+              color: "#fff",
+            }}
           />
         </Box>
 
@@ -260,7 +269,7 @@ export default function StakePage() {
           style={{ height: "50px", marginBottom: "10px", marginTop: "30px" }}
           onClick={withdrawFrxomPool}
         >
-          Confirm Withdrawal
+          {loading ? "Withdrawing..." : "Confirm Withdrawal"}
         </StyledButton>
       </Dialog>
 
@@ -695,25 +704,6 @@ export default function StakePage() {
                   alignItems="center"
                   justifyContent="space-between"
                 >
-                  <Box
-                    mb={matches ? 2 : 0}
-                    sx={{
-                      width: matches ? "100%" : "48%",
-                      height: "45px",
-                      color: "#fff",
-                      fontSize: "16px",
-                      cursor: "pointer",
-                      background: "transparent",
-                      border: "2px solid #fff",
-                      borderRadius: "25px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    Claim Rewards
-                  </Box>
-
                   <StyledButton
                     onClick={handleOpen}
                     width={matches ? "100%" : "48%"}
