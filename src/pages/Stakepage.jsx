@@ -113,18 +113,19 @@ export default function StakePage() {
   };
 
   const withdrawFrxomPool = async () => {
-    setLoading(true);
+    alert("You cannot withdraw any tokens. Duration is not complete yet.");
+    // setLoading(true);
 
-    if (amountToWithdraw === "") {
-      setLoading(false);
-      return;
-    } else {
-      try {
-        await Withdraw(enabledWallet, amountToWithdraw);
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    // if (amountToWithdraw === "") {
+    //   setLoading(false);
+    //   return;
+    // } else {
+    //   try {
+    //     await Withdraw(enabledWallet, amountToWithdraw);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // }
   };
 
   const handleClose = () => {
@@ -183,7 +184,7 @@ export default function StakePage() {
             fontWeight="400"
             color="#fff"
           >
-            Account Balance
+            Withdrawable Balance
           </Typography>
         </Box>
         <Box
