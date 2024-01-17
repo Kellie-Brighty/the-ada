@@ -10,6 +10,7 @@ import { db } from "../index";
 
 const getStakePoolData = async ({ walletId, duration }) => {
   const stakesDocumentRef = collection(db, "stakes");
+  console.log("documents:::", stakesDocumentRef);
 
   const userStakeQuery = query(
     stakesDocumentRef,
